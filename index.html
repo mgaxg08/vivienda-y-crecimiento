@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HÁBITAT URBANO | Vivienda y Crecimiento Sostenible</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Variables y Reset Básico */
+        :root {
+            --primary-color: #005662; /* Azul/Verde Oscuro (Identidad) */
+            --secondary-color: #f7b32b; /* Amarillo/Naranja (Acento) */
+            --text-color: #333;
+            --light-bg: #f4f4f9;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: white;
+            scroll-behavior: smooth;
+        }
+
+        /* Tipografía y Secciones */
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        section {
+            padding: 50px 5%;
+        }
+        
+        /* CABECERA y NAVEGACIÓN */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-weight: bold;
+            font-size: 1.5em;
+            letter-spacing: 1px;
+            color: var(--primary-color);
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li a {
+            padding: 10px 15px;
+            display: block;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+        .menu-toggle {
+            display: none; /* Ocultar en desktop */
+        }
+
+        /* SECCIÓN HERO */
+        .hero {
+            background-color: var(--light-bg);
+            padding: 120px 5%;
+            text-align: center;
+            /* Simulación de fondo con imagen relevante al tema */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://via.placeholder.com/1200x500/005662/FFFFFF?text=PLANIFICACION+URBANA');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        .hero h1 {
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .hero p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        .cta-button {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .cta-button:hover {
+            background-color: #e0a325;
+        }
+
+        /* SECCIÓN PROYECTOS */
+        .projects-grid {
+            text-align: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .project-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .project-card h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        .project-card a {
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* SECCIÓN ANÁLISIS URBANO (Gráfico) */
+        .data-section {
+            background-color: var(--light-bg);
+        }
+        #urban-data-chart {
+            max-width: 90%;
+            max-height: 400px;
+            margin: 20px auto;
+        }
+
+        /* SECCIÓN CONTACTO */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .contact-form button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        .contact-form button:hover {
+            background-color: #00796b;
+        }
+
+        /* PIE DE PÁGINA */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px 5%;
+            font-size: 0.9em;
+        }
+
+        /* MEDIA QUERIES (RESPONSIVIDAD MÓVIL) */
+        @media (max-width: 768px) {
+            nav {
+                display: none; /* Ocultar menú en móvil por defecto */
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 60px; 
+                left: 0;
+                background-color: white;
+                box-shadow: 0 4px 4px rgba(0,0,0,0.1);
+            }
+            nav.active {
+                display: flex; /* Mostrar cuando está activo */
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px 0;
+            }
+            .menu-toggle {
+                display: block; /* Mostrar botón de hamburguesa */
+                background: none;
+                border: none;
+                font-size: 1.8em;
+                cursor: pointer;
+                color: var(--primary-color);
+            }
+            .hero h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">HÁBITAT URBANO</div>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#analisis">Análisis Urbano</a></li>
+                <li><a href="#recursos">Recursos</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    </header>
+
+    <main>
+        <section id="inicio" class="hero">
+            <h1>Ciudades del Futuro: Vivienda y Desarrollo Inteligente</h1>
+            <p>Explora cómo la innovación y el diseño están transformando nuestros espacios urbanos para un crecimiento inclusivo y sostenible.</p>
+            <a href="#proyectos" class="cta-button">Explorar Proyectos</a>
+        </section>
+
+        <section id="proyectos">
+            <h2>Proyectos de Vivienda Sostenible</h2>
+            <div class="projects-grid">
+                <article class="project-card">
+                    <h3>Densidad Media y Asequibilidad</h3>
+                    <p>Diseño de conjuntos habitacionales que equilibran la necesidad de espacio con la optimización de recursos y la cercanía a servicios.</p>
+                    <a href="#">Ver caso de estudio →</a>
+                </article>
+                <article class="project-card">
+                    <h3>Rehabilitación Urbana Inteligente</h3>
+                    <p>Estrategias para revitalizar barrios existentes, mejorando la eficiencia energética y la calidad de vida sin desplazamiento social.</p>
+                    <a href="#">Ver caso de estudio →</a>
+                </article>
+                <article class="project-card">
+                    <h3>Movilidad Integrada y Hábitat</h3>
+                    <p>Proyectos que priorizan el transporte público, la bicicleta y los peatones, conectando la vivienda con el flujo urbano.</p>
+                    <a href="#">Ver caso de estudio →</a>
+                </article>
+            </div>
+        </section>
+
+        <section id="analisis" class="data-section">
+            <h2>Análisis de Crecimiento Urbano</h2>
+            <div id="urban-data-chart">
+                <canvas id="growthChart"></canvas>
+            </div>
+            <p style="text-align: center; margin-top: 20px;">**Gráfico de ejemplo:** Evolución del crecimiento poblacional y el índice de asequibilidad de vivienda en la última década.</p>
+        </section>
+
+        <section id="recursos">
+            <h2>Recursos y Documentos Clave</h2>
+            <ul style="list-style: none; padding: 0; max-width: 600px; margin: 0 auto;">
+                <li style="margin-bottom: 10px; border-bottom: 1px dashed #ccc; padding-bottom: 5px;"><a href="#" style="font-size: 1.1em; font-weight: 600;">Descarga: Informe Global de Tendencias de Hábitat (2025)</a></li>
+                <li style="margin-bottom: 10px; border-bottom: 1px dashed #ccc; padding-bottom: 5px;"><a href="#" style="font-size: 1.1em; font-weight: 600;">Herramienta Interactiva: Calculadora de Huella de Carbono Urbana</a></li>
+                <li style="margin-bottom: 10px;
